@@ -14,8 +14,6 @@ export class CoverLogo {
 
   build() {
     const texture = new THREE.TextureLoader().load( './assets/cover_logo.png' );
-    const scale = 140
-    const aspectRatio = 1.142
     const geometry = new THREE.BoxGeometry(
       Constants.scale,
       Constants.scale * Constants.aspectRatio,
