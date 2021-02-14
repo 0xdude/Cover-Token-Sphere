@@ -45,16 +45,6 @@ export class Token {
     this.mesh = new THREE.Mesh(geometry, materials)
   }
 
-  positionToken(index, rotationIndex) {
-    const phi = Math.PI * (3 - Math.sqrt(5))
-    const y = 1 - rotationIndex * 2
-    const radius = Math.sqrt( 1 - y * y)
-    const theta = phi * index
-    this.mesh.position.x = Math.cos(theta) * Constants.radiusX
-    this.mesh.position.y = y * Constants.radiusY
-    this.mesh.position.z = Math.sin(theta) * Constants.radiusZ
-  }
-
   render() {
     this.mesh.rotation.x += this.rotationXSpeed
     this.mesh.rotation.z += this.rotationYSpeed

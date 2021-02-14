@@ -4,6 +4,9 @@ import { Token } from './Token.js';
 const Constants = {
   rotationXSpeed: 0.005,
   rotationYSpeed: 0.005,
+  radiusX: 115,
+  radiusY: 115,
+  radiusZ: 115
 }
 
 export class TokenSphere {
@@ -14,11 +17,11 @@ export class TokenSphere {
 
   constructor(configuration) {
     this.build()
+    this.addTokens()
   }
 
   build() {
     this.object = new THREE.Group()
-
     this.tokens.push(new Token({name: "yearn", color: 0x2a6bdb}))
     this.tokens.push(new Token({name: "badger", color: 0xe5a145}))
     this.tokens.push(new Token({name: "cream", color: 0x88ddd0}))
@@ -30,10 +33,17 @@ export class TokenSphere {
     this.tokens.push(new Token({name: "token", color: 0xffffff}))
     this.tokens.push(new Token({name: "origin", color: 0x22313e}))
     this.tokens.push(new Token({name: "boringdao", color: 0x337be1}))
+  }
 
+  addTokens() {
     this.tokens.forEach((token, i) => {
-      let rotationIndex = i / this.tokens.length
-      token.positionToken(i, rotationIndex)
+      const phi = Math.PI * (3 - Math.sqrt(5))
+      const y = 1 - (i / this.tokens.length) * 2
+      const radius = Math.sqrt( 1 - y * y)
+      const theta = phi * i
+      token.mesh.position.x = Math.cos(theta) * Constants.radiusX
+      token.mesh.position.y = y * Constants.radiusY
+      token.mesh.position.z = Math.sin(theta) * Constants.radiusZ
       this.object.add(token.mesh)
     })
   }
