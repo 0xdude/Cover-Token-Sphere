@@ -6,8 +6,8 @@ const Constants = {
   radiusY: 115,
   radiusZ: 115,
   thicknessScale: 0.25,
-  rotationXSpeedScale: 0.05,
-  rotationYSpeedScale: 0.05,
+  rotationSpeedScale: 0.05,
+  touchRotationSpeedScale: 8
 }
 
 export class Token {
@@ -18,15 +18,22 @@ export class Token {
 
   constructor(configuration) {
     this.configuration = configuration
-    this.rotationXSpeed = (Math.random() - 0.5) * Constants.rotationXSpeedScale
-    this.rotationYSpeed = (Math.random() - 0.5) * Constants.rotationYSpeedScale
+    this.baseRotationSpeed = 0
+    this.touchRotationSpeed = 0
+    this.rotationSpeed = (Math.random() - 0.5) * Constants.rotationSpeedScale
     this.build()
   }
 
   build() {
     const texture = new THREE.TextureLoader().load("./assets/tokens/" + this.configuration.name + ".png")
-    const topAndBottomMaterial = new THREE.MeshBasicMaterial({map: texture});
-    const sideMaterial = new THREE.MeshBasicMaterial({color: this.configuration.color});
+    const topAndBottomMaterial = new THREE.MeshPhongMaterial({
+      map: texture,
+      specular: 0x000000
+    });
+    const sideMaterial = new THREE.MeshPhongMaterial({
+      color: this.configuration.color,
+      specular: 0x000000
+    });
 
     const materials = [
       sideMaterial,
@@ -45,8 +52,16 @@ export class Token {
     this.mesh = new THREE.Mesh(geometry, materials)
   }
 
+  touch() {
+    this.touchRotationSpeed = this.rotationSpeed * Constants.touchRotationSpeedScale
+    setInterval(() => {
+      this.touchRotationSpeed = 0
+    }, 1000);
+  }
+
   render() {
-    this.mesh.rotation.x += this.rotationXSpeed
-    this.mesh.rotation.z += this.rotationYSpeed
+    this.baseRotationSpeed += (this.touchRotationSpeed - this.baseRotationSpeed) * 0.05
+    this.mesh.rotation.x += this.baseRotationSpeed + this.rotationSpeed
+    this.mesh.rotation.z += this.baseRotationSpeed + this.rotationSpeed
   }
 }

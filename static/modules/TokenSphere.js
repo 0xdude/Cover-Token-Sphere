@@ -33,6 +33,7 @@ export class TokenSphere {
     this.tokens.push(new Token({name: "token", color: 0xffffff}))
     this.tokens.push(new Token({name: "origin", color: 0x22313e}))
     this.tokens.push(new Token({name: "boringdao", color: 0x337be1}))
+
   }
 
   addTokens() {
@@ -48,8 +49,16 @@ export class TokenSphere {
     })
   }
 
+  touch(object) {
+    this.tokens.forEach((token) => {
+      if (token.mesh == object) {
+        token.touch()
+      }
+    })
+  }
+
   render() {
-    this.tokens.forEach((token, i) => {
+    this.tokens.forEach((token) => {
       token.render()
     })
 

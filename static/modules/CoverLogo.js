@@ -14,12 +14,16 @@ export class CoverLogo {
 
   build() {
     const texture = new THREE.TextureLoader().load( './assets/cover_logo.png' );
-    const geometry = new THREE.BoxGeometry(
+    const geometry = new THREE.PlaneGeometry(
       Constants.scale,
       Constants.scale * Constants.aspectRatio,
-      0
+      32
     );
-    const material = new THREE.MeshBasicMaterial( { map: texture, transparent: true} );
-    this.mesh = new THREE.Mesh( geometry, material);
+    const material = new THREE.MeshPhongMaterial( {
+      map: texture,
+      transparent: true,
+      specular: 0x282828
+    })
+    this.mesh = new THREE.Mesh(geometry, material);
   }
 }
